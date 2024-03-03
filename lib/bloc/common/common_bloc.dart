@@ -7,15 +7,9 @@ part 'common_event.dart';
 part 'common_state.dart';
 
 class CommonBloc extends BaseBloc<CommonEvent, CommonState> {
-  static final CommonBloc _instance = CommonBloc._();
-  late BaseClearUserDataUseCase _clearUserDataUseCase;
+  late final BaseClearUserDataUseCase _clearUserDataUseCase;
 
-  factory CommonBloc(BaseClearUserDataUseCase clearUserDataUseCase) {
-    _instance._clearUserDataUseCase = clearUserDataUseCase;
-    return _instance;
-  }
-
-  CommonBloc._() : super(const CommonState()) {
+  CommonBloc(this._clearUserDataUseCase) : super(const CommonState()) {
     on<LoadingVisibilityEmitted>(
       _onLoadingVisibilityEmitted,
       transformer: log(),

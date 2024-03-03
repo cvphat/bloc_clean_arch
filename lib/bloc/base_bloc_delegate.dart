@@ -2,21 +2,33 @@ import 'dart:async';
 
 import 'package:bloc_clean_arch/bloc_clean_arch.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 abstract class BaseBlocDelegate<E extends BaseBlocEvent,
     S extends BaseBlocState> extends Bloc<E, S> {
   BaseBlocDelegate(super.initialState);
 
-  late final BaseAppBloc appBloc;
+  late final BaseAppBloc _appBloc;
   late final BaseNavigator navigator;
   late final DisposeBag disposeBag;
   late final BaseExceptionHandler exceptionHandler;
   late final BaseExceptionMapper exceptionMapper;
 
-  late final CommonBloc _commonBloc;
-  set commonBloc(CommonBloc commonBloc) {
-    _commonBloc = commonBloc;
+  late final BaseClearUserDataUseCase _clearUserDataUseCase =
+      GetIt.instance.get<BaseClearUserDataUseCase>();
+  late final CommonBloc _commonBloc = CommonBloc(_clearUserDataUseCase)
+    ..navigator = navigator
+    // ..appBloc = appBloc
+    ..disposeBag = disposeBag
+    ..exceptionHandler = exceptionHandler
+    ..exceptionMapper = exceptionMapper;
+
+  set appBloc(BaseAppBloc appBloc) {
+    Log.d('app isnit $this the app: ${appBloc.navigator}');
+    _appBloc = appBloc;
   }
+
+  BaseAppBloc get appBloc => _appBloc;
 
   CommonBloc get commonBloc =>
       this is CommonBloc ? this as CommonBloc : _commonBloc;

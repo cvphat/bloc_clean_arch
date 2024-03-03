@@ -9,7 +9,7 @@ abstract class _BasePageStateDelegate<
     B extends BaseBloc,
     A extends BaseAppBloc> extends State<T> implements ExceptionListener {
   late final BaseNavigator navigator = GetIt.instance.get<BaseNavigator>();
-  late final BaseAppBloc appBloc = GetIt.instance.get<A>();
+  // late final BaseAppBloc appBloc = GetIt.instance.get<A>();
 
   late final BaseExceptionMapper exceptionMapper =
       GetIt.instance.get<BaseExceptionMapper>();
@@ -21,24 +21,25 @@ abstract class _BasePageStateDelegate<
         );
 
   late final DisposeBag disposeBag = DisposeBag();
-  late final BaseClearUserDataUseCase _clearUserDataUseCase =
-      GetIt.instance.get<BaseClearUserDataUseCase>();
-  late final CommonBloc commonBloc = CommonBloc(_clearUserDataUseCase)
-    ..navigator = navigator
-    ..appBloc = appBloc
-    ..disposeBag = disposeBag
-    ..exceptionHandler = exceptionHandler
-    ..exceptionMapper = exceptionMapper;
 
   late final B bloc = GetIt.instance.get<B>()
     ..navigator = navigator
-    ..appBloc = appBloc
-    ..commonBloc = commonBloc
     ..disposeBag = disposeBag
     ..exceptionHandler = exceptionHandler
     ..exceptionMapper = exceptionMapper;
 
   bool get isAppWidget => false;
+
+  @override
+  void initState() {
+    if (B is BaseAppBloc) {
+      Log.d('B instance: $B');
+    } else {
+      final appBloc = GetIt.instance.get<A>();
+      Log.d('B instance: $appBloc');
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ abstract class _BasePageStateDelegate<
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => bloc),
-          BlocProvider(create: (_) => commonBloc),
+          BlocProvider(create: (_) => bloc.commonBloc),
         ],
         child: BlocListener<CommonBloc, CommonState>(
           listenWhen: (previous, current) =>
@@ -107,6 +108,6 @@ abstract class _BasePageStateDelegate<
 
   @override
   void onRefreshTokenFailed() {
-    commonBloc.add(ForceLogoutButtonPressed());
+    bloc.commonBloc.add(ForceLogoutButtonPressed());
   }
 }
