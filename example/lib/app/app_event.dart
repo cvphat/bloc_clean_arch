@@ -4,9 +4,9 @@ abstract class AppEvent extends BaseAppEvent {
   const AppEvent();
 }
 
-class ThemeModeEmitted extends AppEvent {
+class AppThemeChanged extends AppEvent {
   final ThemeMode themeMode;
-  const ThemeModeEmitted({
+  const AppThemeChanged({
     required this.themeMode,
   });
 }

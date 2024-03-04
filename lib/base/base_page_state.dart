@@ -9,7 +9,7 @@ abstract class _BasePageStateDelegate<
     B extends BaseBloc,
     A extends BaseAppBloc> extends State<T> implements ExceptionListener {
   late final BaseNavigator navigator = GetIt.instance.get<BaseNavigator>();
-  // late final BaseAppBloc appBloc = GetIt.instance.get<A>();
+  late final A appBloc = GetIt.instance.get<A>();
 
   late final BaseExceptionMapper exceptionMapper =
       GetIt.instance.get<BaseExceptionMapper>();
@@ -29,17 +29,7 @@ abstract class _BasePageStateDelegate<
     ..exceptionMapper = exceptionMapper;
 
   bool get isAppWidget => false;
-
-  @override
-  void initState() {
-    if (B is BaseAppBloc) {
-      Log.d('B instance: $B');
-    } else {
-      final appBloc = GetIt.instance.get<A>();
-      Log.d('B instance: $appBloc');
-    }
-    super.initState();
-  }
+  bool get isSelectable => true;
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +47,25 @@ abstract class _BasePageStateDelegate<
           listener: (context, state) {
             handleException(state.exceptionWrapper!);
           },
-          child: isAppWidget
-              ? buildPage(context)
-              : Stack(
-                  children: [
-                    buildPage(context),
-                    BlocBuilder<CommonBloc, CommonState>(
-                      buildWhen: (previous, current) =>
-                          previous.isLoading != current.isLoading,
-                      builder: (context, state) => Visibility(
-                        visible: state.isLoading,
-                        child: buildPageLoading(),
+          child: buildPageListeners(
+            child: isAppWidget
+                ? buildPage(context)
+                : Stack(
+                    children: [
+                      isSelectable
+                          ? SelectionArea(child: buildPage(context))
+                          : buildPage(context),
+                      BlocBuilder<CommonBloc, CommonState>(
+                        buildWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading,
+                        builder: (context, state) => Visibility(
+                          visible: state.isLoading,
+                          child: buildPageLoading(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

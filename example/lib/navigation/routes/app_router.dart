@@ -14,6 +14,6 @@ class AppRouter extends $AppRouter {
   RouteType get defaultRouteType => const RouteType.adaptive();
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: HomeRoute.page),
+        AutoRoute(page: HomeRoute.page, path: '/home'),
       ];
 }

@@ -8,16 +8,16 @@ export 'app_state.dart';
 
 part 'app_event.dart';
 
+@LazySingleton()
 @LazySingleton(as: BaseAppBloc)
 class AppBloc extends BaseAppBloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
-    on<ThemeModeEmitted>(
-      _onThemeModeChange,
+    on<AppThemeChanged>(
+      _onAppThemeChanged,
     );
   }
 
-  void _onThemeModeChange(
-      ThemeModeEmitted event, Emitter<AppState> emit) async {
+  void _onAppThemeChanged(AppThemeChanged event, Emitter<AppState> emit) async {
     return await runBlocCatching(
       action: () async {
         emit(state.copyWith(themeMode: event.themeMode));

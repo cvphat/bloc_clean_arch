@@ -5,6 +5,7 @@ import 'package:example/base/page_state.dart';
 import 'package:example/ui/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import 'bloc/home_state.dart';
 
@@ -30,13 +31,23 @@ class _HomePageState extends PageState<HomePage, HomeBloc> {
             ),
             ElevatedButton(
               onPressed: () {
-                // appBloc.add(const ThemeModeEmitted(themeMode: ThemeMode.dark));
+                appBloc.add(const AppThemeChanged(themeMode: ThemeMode.dark));
               },
               child: const Text('Change to Dark'),
             ),
+            BlocBuilder<AppBloc, AppState>(
+              builder: (context, state) {
+                return Text(state.themeMode.name);
+              },
+            ),
+            ScreenTypeLayout.builder(
+              desktop: (_) => const Text('desktop'),
+              tablet: (_) => const Text('tablet'),
+              mobile: (_) => const Text('mobile'),
+            ),
             ElevatedButton(
               onPressed: () {
-                // appBloc.add(const ThemeModeEmitted(themeMode: ThemeMode.light));
+                appBloc.add(const AppThemeChanged(themeMode: ThemeMode.light));
               },
               child: const Text('Change to Light'),
             ),
