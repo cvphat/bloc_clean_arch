@@ -1,13 +1,13 @@
 library bloc_clean_arch;
 
-export 'base/base.dart';
-export 'bloc/app/base_app_bloc.dart';
-export 'bloc/base_bloc.dart';
-export 'bloc/common/common_bloc.dart';
-export 'config/config.dart';
-export 'exceptions/exceptions.dart';
-export 'extensions/extensions.dart';
-export 'mixin/mixin.dart';
-export 'navigation/navigation.dart';
-export 'usecase/use_case.dart';
-export 'utils/utils.dart';
+export 'src/base/base.dart';
+export 'src/bloc/app/base_app_bloc.dart';
+export 'src/bloc/base_bloc.dart';
+export 'src/bloc/common/common_bloc.dart';
+export 'src/config/config.dart';
+export 'src/exceptions/exceptions.dart';
+export 'src/extensions/extensions.dart';
+export 'src/mixin/mixin.dart';
+export 'src/navigation/navigation.dart';
+export 'src/usecase/use_case.dart';
+export 'src/utils/utils.dart';

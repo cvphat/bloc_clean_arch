@@ -1,5 +1,4 @@
 import 'package:bloc_clean_arch/bloc_clean_arch.dart';
-import 'package:bloc_clean_arch/exceptions/exceptions.dart';
 import 'package:example/navigation/app_popup_info.dart';
 import 'package:injectable/injectable.dart';
 
