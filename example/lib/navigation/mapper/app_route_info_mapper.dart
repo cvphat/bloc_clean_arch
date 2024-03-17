@@ -5,7 +5,7 @@ import 'package:example/navigation/routes/app_router.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: BaseRouteInfoMapper)
-class AppRouteInfoMapper extends BaseRouteInfoMapper {
+class AppRouteInfoMapper extends BaseRouteInfoMapper<PageRouteInfo> {
   @override
   PageRouteInfo map(BaseRouteInfo routeInfo) {
     if (routeInfo is LoginRouteInfo) {

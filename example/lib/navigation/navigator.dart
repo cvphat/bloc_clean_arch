@@ -17,7 +17,7 @@ class Navigator extends BaseNavigator with LogMixin {
 
   final AppRouter _appRouter;
   final BasePopupInfoMapper _appPopupInfoMapper;
-  final BaseRouteInfoMapper _appRouteInfoMapper;
+  final BaseRouteInfoMapper<PageRouteInfo> _appRouteInfoMapper;
 
   final _shownPopups = <AppPopupInfo, Completer<dynamic>>{};
   final tabRoutes = const [];
@@ -90,5 +90,129 @@ class Navigator extends BaseNavigator with LogMixin {
       barrierDismissible: barrierDismissible,
       useSafeArea: useSafeArea,
     );
+  }
+
+  @override
+  Future<bool> pop<T extends Object?>({
+    T? result,
+    bool useRootNavigator = false,
+  }) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('pop with result = $result, useRootNav = $useRootNavigator');
+    }
+
+    return useRootNavigator
+        ? _appRouter.pop<T>(result)
+        : _currentTabRouterOrRootRouter.pop<T>(result);
+  }
+
+  @override
+  Future<T?> popAndPush<T extends Object?, R extends Object?>(
+    BaseRouteInfo routeInfo, {
+    R? result,
+    bool useRootNavigator = false,
+  }) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD(
+          'popAndPush $routeInfo with result = $result, useRootNav = $useRootNavigator');
+    }
+
+    return useRootNavigator
+        ? _appRouter.popAndPush<T, R>(_appRouteInfoMapper.map(routeInfo),
+            result: result)
+        : _currentTabRouterOrRootRouter.popAndPush<T, R>(
+            _appRouteInfoMapper.map(routeInfo),
+            result: result,
+          );
+  }
+
+  @override
+  Future<void> popAndPushAll(
+    List<BaseRouteInfo> listRouteInfo, {
+    bool useRootNavigator = false,
+  }) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('popAndPushAll $listRouteInfo, useRootNav = $useRootNavigator');
+    }
+
+    return useRootNavigator
+        ? _appRouter.popAndPushAll(_appRouteInfoMapper.mapList(listRouteInfo))
+        : _currentTabRouterOrRootRouter
+            .popAndPushAll(_appRouteInfoMapper.mapList(listRouteInfo));
+  }
+
+  @override
+  void popUntilRoot({bool useRootNavigator = false}) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('popUntilRoot, useRootNav = $useRootNavigator');
+    }
+
+    useRootNavigator
+        ? _appRouter.popUntilRoot()
+        : _currentTabRouterOrRootRouter.popUntilRoot();
+  }
+
+  @override
+  void popUntilRouteName(String routeName) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('popUntilRouteName $routeName');
+    }
+
+    _appRouter.popUntilRouteWithName(routeName);
+  }
+
+  @override
+  Future<T?> push<T extends Object?>(BaseRouteInfo routeInfo) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('push $routeInfo');
+    }
+
+    return _appRouter.push<T>(_appRouteInfoMapper.map(routeInfo));
+  }
+
+  @override
+  Future<void> pushAll(List<BaseRouteInfo> listRouteInfo) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('pushAll $listRouteInfo');
+    }
+
+    return _appRouter.pushAll(_appRouteInfoMapper.mapList(listRouteInfo));
+  }
+
+  @override
+  bool removeAllRoutesWithName(String routeName) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('removeAllRoutesWithName $routeName');
+    }
+
+    return _appRouter.removeWhere((route) => route.name == routeName);
+  }
+
+  @override
+  bool removeLast() {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('removeLast');
+    }
+
+    return _appRouter.removeLast();
+  }
+
+  @override
+  bool removeUntilRouteName(String routeName) {
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('removeUntilRouteName $routeName');
+    }
+
+    return _appRouter.removeUntil((route) => route.name == routeName);
+  }
+
+  @override
+  Future<void> replaceAll(List<BaseRouteInfo> listRouteInfo) {
+    _shownPopups.clear();
+    if (LogConfig.enableNavigatorObserverLog) {
+      logD('replaceAll by $listRouteInfo');
+    }
+
+    return _appRouter.replaceAll(_appRouteInfoMapper.mapList(listRouteInfo));
   }
 }
