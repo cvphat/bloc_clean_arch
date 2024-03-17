@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import 'bloc/home_state.dart';
-
 @RoutePage()
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,10 +49,20 @@ class _HomePageState extends PageState<HomePage, HomeBloc> {
               },
               child: const Text('Change to Light'),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                navigator.replace(LoginRouteInfo.login());
+              },
+              child: const Text('Login'),
+            ),
           ],
         ),
       ),
       floatingActionButton: BlocBuilder<CommonBloc, CommonState>(
+        bloc: bloc.commonBloc,
         builder: (context, state) {
           return Visibility(
             visible: !state.isLoading,

@@ -1,11 +1,12 @@
 import 'package:bloc_clean_arch/bloc_clean_arch.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
-import 'home_state.dart';
-
 part 'home_event.dart';
+part 'home_bloc.freezed.dart';
+part 'home_state.dart';
 
-@LazySingleton()
+@injectable
 class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeState()) {
     on<Plus1Emitted>(

@@ -10,3 +10,11 @@ class ClearUserDataInput extends BaseInput {
 class ClearUserDataOutput extends BaseOutput {
   const ClearUserDataOutput();
 }
+
+class FakeClearUserDataUseCase extends BaseClearUserDataUseCase {
+  @override
+  Future<ClearUserDataOutput> buildUseCase(ClearUserDataInput input) {
+    throw UnimplementedError(
+        'Just fake instace of use case to init common bloc');
+  }
+}

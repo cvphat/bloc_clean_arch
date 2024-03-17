@@ -23,7 +23,7 @@ abstract class _BasePageStateDelegate<
   late final DisposeBag disposeBag = DisposeBag();
 
   late final B bloc = GetIt.instance.get<B>()
-    ..navigator = navigator
+    ..appBloc = appBloc
     ..disposeBag = disposeBag
     ..exceptionHandler = exceptionHandler
     ..exceptionMapper = exceptionMapper;

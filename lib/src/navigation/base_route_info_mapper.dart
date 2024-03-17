@@ -1,9 +1,9 @@
 part of 'navigation.dart';
 
-abstract class BaseRouteInfoMapper {
-  PageRouteInfo map(BaseRouteInfo routeInfo);
+abstract class BaseRouteInfoMapper<T> {
+  T map(BaseRouteInfo routeInfo);
 
-  List<PageRouteInfo> mapList(List<BaseRouteInfo> listRouteInfo) {
+  List<T> mapList(List<BaseRouteInfo> listRouteInfo) {
     return listRouteInfo.map(map).toList(growable: false);
   }
 }
