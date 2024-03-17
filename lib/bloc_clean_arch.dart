@@ -11,3 +11,4 @@ export 'src/mixin/mixin.dart';
 export 'src/navigation/navigation.dart';
 export 'src/usecase/use_case.dart';
 export 'src/utils/utils.dart';
+export 'src/entity/entity.dart';

@@ -1,5 +1,5 @@
 part of 'base.dart';
 
-abstract class Disposable {
+abstract class BaseDisposable {
   void dispose();
 }

@@ -24,7 +24,7 @@ class DisposeBag with LogMixin {
         if (_enableLogging) {
           logD('Disposed $disposable');
         }
-      } else if (disposable is Disposable) {
+      } else if (disposable is BaseDisposable) {
         disposable.dispose();
       }
     }
