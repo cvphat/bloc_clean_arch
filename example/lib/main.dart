@@ -19,7 +19,7 @@ void main() async {
 
 class MainApp extends StatefulWidget {
   const MainApp({required this.initialRoute, super.key});
-  final LoadInitialRouteOutput<PageRouteInfo> initialRoute;
+  final List<PageRouteInfo> initialRoute;
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -84,7 +84,7 @@ class _MainAppState extends PageState<MainApp, AppBloc> {
             routeInformationParser: _appRouter.defaultRouteParser(),
             routerDelegate: _appRouter.delegate(
               deepLinkBuilder: (deepLink) {
-                return DeepLink(widget.initialRoute.routes);
+                return DeepLink(widget.initialRoute);
               },
               navigatorObservers: () => [AppNavigatorObserver()],
             ),

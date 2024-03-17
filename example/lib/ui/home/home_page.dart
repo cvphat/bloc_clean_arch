@@ -54,7 +54,7 @@ class _HomePageState extends PageState<HomePage, HomeBloc> {
             ),
             ElevatedButton(
               onPressed: () {
-                navigator.replace(LoginRouteInfo.login());
+                navigator.replace(const LoginRouteInfo());
               },
               child: const Text('Login'),
             ),

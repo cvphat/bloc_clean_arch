@@ -63,7 +63,7 @@ class CommonBloc extends BaseBloc<CommonEvent, CommonState> {
         await _clearUserDataUseCase.execute(
           const ClearUserDataInput(),
         );
-        await navigator.replace(LoginRouteInfo.login());
+        await navigator.replace(const LoginRouteInfo());
       },
     );
   }

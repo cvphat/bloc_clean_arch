@@ -5,7 +5,5 @@ abstract class BaseRouteInfo {
 }
 
 class LoginRouteInfo extends BaseRouteInfo {
-  const LoginRouteInfo._();
-
-  factory LoginRouteInfo.login() => const LoginRouteInfo._();
+  const LoginRouteInfo();
 }

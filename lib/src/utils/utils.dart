@@ -9,15 +9,19 @@ import 'package:get_it/get_it.dart';
 part 'log_util.dart';
 part 'dispose_bag.dart';
 
-Future<LoadInitialRouteOutput<T>> loadInitialRoute<T>() async {
+Future<List<T>> loadInitialRoute<T>() async {
   final result = runCatching(
     action: () => GetIt.instance
-        .get<BaseLoadInitialRouteUseCase<T>>()
+        .get<BaseLoadInitialRouteUseCase>()
         .execute(const LoadInitialRouteInput()),
   );
 
-  return result.when(
+  final output = result.when(
     success: (output) => output,
     failure: (e) => const LoadInitialRouteOutput(),
   );
+
+  final mapper = GetIt.instance.get<BaseRouteInfoMapper<T>>();
+
+  return mapper.mapList(output.routes);
 }
