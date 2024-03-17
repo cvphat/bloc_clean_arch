@@ -1,5 +1,4 @@
-import 'package:bloc_clean_arch/bloc_clean_arch.dart';
-import 'package:flutter/material.dart';
+part of 'navigation.dart';
 
 class AppNavigatorObserver extends NavigatorObserver with LogMixin {
   AppNavigatorObserver();

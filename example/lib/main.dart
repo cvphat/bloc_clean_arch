@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:bloc_clean_arch/bloc_clean_arch.dart';
 import 'package:example/app/app_bloc.dart';
 import 'package:example/di/di.dart';
-import 'package:example/navigation/observer/app_navigator_observer.dart';
 import 'package:example/navigation/routes/app_router.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +11,15 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 import 'base/page_state.dart';
 
-void main() {
+void main() async {
   configureInjection();
-  runApp(const MainApp());
+  final initialRoute = await loadInitialRoute<PageRouteInfo>();
+  runApp(MainApp(initialRoute: initialRoute));
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({required this.initialRoute, super.key});
+  final LoadInitialRouteOutput<PageRouteInfo> initialRoute;
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -25,10 +27,6 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends PageState<MainApp, AppBloc> {
   final _appRouter = GetIt.instance.get<AppRouter>();
-
-  List<PageRouteInfo> _mapRouteToPageRouteInfo() {
-    return [const HomeRoute()];
-  }
 
   @override
   bool get isAppWidget => true;
@@ -86,7 +84,7 @@ class _MainAppState extends PageState<MainApp, AppBloc> {
             routeInformationParser: _appRouter.defaultRouteParser(),
             routerDelegate: _appRouter.delegate(
               deepLinkBuilder: (deepLink) {
-                return DeepLink(_mapRouteToPageRouteInfo());
+                return DeepLink(widget.initialRoute.routes);
               },
               navigatorObservers: () => [AppNavigatorObserver()],
             ),
